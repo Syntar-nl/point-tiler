@@ -1,4 +1,4 @@
-FROM lukemathwalker/cargo-chef:0.1.78-rust-1.98.0-alpine3.24 AS chef
+FROM docker.io/lukemathwalker/cargo-chef:0.1.78-rust-1.98.0-alpine3.24 AS chef
 WORKDIR /app
 
 FROM chef AS planner
@@ -30,7 +30,7 @@ RUN cargo build \
     --target x86_64-unknown-linux-musl \
     --bin ptiler
 
-FROM gcr.io/distroless/static-debian13 AS runtime
+FROM gcr.io/distroless/static-debian13:nonroot AS runtime
 WORKDIR /app
 
 COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/ptiler /ptiler
